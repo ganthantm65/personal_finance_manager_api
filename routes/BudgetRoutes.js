@@ -4,8 +4,8 @@ import express from "express";
 
 const budgetRoutes=express.Router();
 
-budgetRoutes.post('/budgets/:userId',createBudget);
-budgetRoutes.get('/budgets/:userId',getBudgets);
-budgetRoutes.put('/budgets/:budgetId',updateBudget);
+budgetRoutes.post('/:userId',createBudget);
+budgetRoutes.get('/:userId',getBudgets);
+budgetRoutes.put('/:budgetId',updateBudget);
 
 export default budgetRoutes;

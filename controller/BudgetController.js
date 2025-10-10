@@ -1,4 +1,4 @@
-import Budget from "../models/Budget";
+import Budget from "../models/Budget.js";
 
 export const createBudget = async (req,res)=>{
     try{
@@ -30,13 +30,11 @@ export const getBudgets = async (req,res)=>{
 
 export const updateBudget = async (req,res)=>{
     try{
-        const {category,amount,month,year,budgetId} =req.body;
+        const {category,amount,month,year} =req.body;
+        const budgetId=req.params.budgetId;
         const budget=await Budget.findById(budgetId);
         if(!budget){
             return res.status(404).json({message:"Budget not found"});
-        }
-        if(budget.user.toString()!==req.params.userId){
-            return res.status(403).json({message:"Unauthorized"});
         }
         budget.category=category||budget.category;
         budget.amount=amount||budget.amount;
@@ -45,6 +43,6 @@ export const updateBudget = async (req,res)=>{
         await budget.save();
         res.status(200).json({message:"Budget updated successfully",budget});
     }catch(err){
-        res.status(500).json({message:"Server Error"});
+        res.status(500).json({message:err});
     }
 }

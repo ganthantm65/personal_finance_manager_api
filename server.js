@@ -9,6 +9,7 @@ import cors from 'cors';
 import authRoutes from './routes/AuthRoutes.js';
 import accountRoutes from './routes/AccountRoutes.js';
 import transactionRoutes from './routes/TransactionRoutes.js';
+import budgetRoutes from './routes/BudgetRoutes.js';
 
 
 const app = express();
@@ -24,6 +25,7 @@ mongoose.connect(process.env.MONGO_URI,{useNewUrlParser: true, useUnifiedTopolog
 app.use('/api/auth',authRoutes);
 app.use('/api/user',accountRoutes)
 app.use("/api/transactions",transactionRoutes);
+app.use("/api/budgets",budgetRoutes);
 
 const port=process.env.PORT||5000;
 
