@@ -21,7 +21,7 @@ export const createAccount=async(req,res)=>{
         PIN,
         accNo,
         ifsc,
-        balance: amount || 0
+        balance: amount 
     });
     await account.save();
     res.status(201).json({account,message:"Account created successfully"});

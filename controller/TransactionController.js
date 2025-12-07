@@ -6,6 +6,7 @@ export const createTransaction=async(req,res)=>{
     const session = await mongoose.startSession();
     session.startTransaction();
     const {type,amount,category,date,fromAccountId,toAccountId}=req.body;
+    let amt=Number(amount);
     try{
         if(type==="expense"){
             const fromAccount=await Account.findOne({_id:fromAccountId});
@@ -35,7 +36,7 @@ export const createTransaction=async(req,res)=>{
             if(amount<=0){
                 return res.status(400).json({message:"Amount must be greater than zero"});
             }
-            account.balance+=amount;
+            account.balance+=amt;
             await account.save();
 
             const transaction=new Transaction({
@@ -58,7 +59,7 @@ export const createTransaction=async(req,res)=>{
                 return res.status(400).json({message:"Insufficient balance"});
             }
             fromAccount.balance-=amount;
-            toAccount.balance+=amount;
+            toAccount.balance+=amt;
             await fromAccount.save();
             await toAccount.save();
             const transaction=new Transaction({
