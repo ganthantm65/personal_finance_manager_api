@@ -1,7 +1,6 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-import bcrypt, { hash } from 'bcryptjs';
-import { json } from 'express';
+import bcrypt from 'bcryptjs';
 
 
 const jwt_key = process.env.JWT_SECRET || "fallbackSecret";
