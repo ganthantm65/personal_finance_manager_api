@@ -15,7 +15,15 @@ import budgetRoutes from './routes/BudgetRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://my-wallet-snowy.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 console.log(process.env.MONGO_URI);
