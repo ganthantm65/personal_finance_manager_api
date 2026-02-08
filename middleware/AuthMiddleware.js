@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 const jwt_secret=process.env.JWT_SECRET;
 
-export default authMiddleware=(req,res,next)=>{
+const authMiddleware=(req,res,next)=>{
     const token=req.header('Authorization')?.replace('Bearer ','');
     if(!token){
         return res.status(401).json({message:'Token not provided'});
@@ -14,3 +14,5 @@ export default authMiddleware=(req,res,next)=>{
         return res.status(401).json({message:'Invalid token'});
     } 
 }
+
+export default authMiddleware
