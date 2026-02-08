@@ -1,18 +1,21 @@
 import jwt from 'jsonwebtoken';
-const jwt_secret=process.env.JWT_SECRET;
 
-const authMiddleware=(req,res,next)=>{
-    const token=req.header('Authorization')?.replace('Bearer ','');
-    if(!token){
-        return res.status(401).json({message:'Token not provided'});
+const authMiddleware = (req, res, next) => {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) {
+        return res.status(401).json({ message: 'Token not provided' });
     }
-    try{
-        const decoded=jwt.verify(token,jwt_secret);
-        req.user=decoded;
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+       
+        
+        req.user = decoded;
         next();
-    }catch(err){
-        return res.status(401).json({message:'Invalid token'});
-    } 
-}
+    } catch (err) {
+        console.log(err);
+         console.log(process.env.JWT_SECRET);
+        return res.status(401).json({ message: 'Invalid token' });
+    }
+};
 
-export default authMiddleware
+export default authMiddleware;

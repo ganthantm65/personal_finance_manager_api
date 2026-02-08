@@ -4,8 +4,6 @@ import bcrypt from 'bcryptjs';
 import nodemailer from 'nodemailer';
 
 
-const jwt_key = process.env.JWT_SECRET || "fallbackSecret";
-
 export const registerUser=async(req,res)=>{
     const {name,email,password}=req.body;
     
@@ -16,7 +14,7 @@ export const registerUser=async(req,res)=>{
     const hashedPassword=await bcrypt.hash(password,10);
     const user=new User({name,email,password:hashedPassword});
     await user.save();
-    const token=jwt.sign({id:user._id,email:user.email},jwt_key,{expiresIn:'1h'});
+    const token=jwt.sign({id:user._id,email:user.email},process.env.JWT_SECRET,{expiresIn:'1h'});
     res.status(201).json({token,
         user:{id:user._id,name:user.name,email:user.email},
         message:'User registered successfully'});
@@ -32,7 +30,7 @@ export const loginUser=async(req,res)=>{
     if(!isMatched){
         return res.status(400).json({message:`Invalid email or password`});
     }
-    const token=jwt.sign({id:user._id,email:user.email},jwt_key,{expiresIn:'1h'});
+    const token=jwt.sign({id:user._id,email:user.email},process.env.JWT_SECRET,{expiresIn:'1h'});
     res.status(200).json({token,
         user:{id:user._id,name:user.name,email:user.email},
         message:'Login successful'});
