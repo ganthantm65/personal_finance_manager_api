@@ -5,7 +5,7 @@ import authMiddleware from "../middleware/AuthMiddleware.js";
 const budgetRoutes = express.Router();
 
 budgetRoutes.post('/:userId',authMiddleware, createBudget);
-budgetRoutes.get('/user/:userId',authMiddleware, getBudgets);
+budgetRoutes.get('/:userId',authMiddleware, getBudgets);
 budgetRoutes.put('/update/:budgetId',authMiddleware, updateBudget);
 
 export default budgetRoutes;
