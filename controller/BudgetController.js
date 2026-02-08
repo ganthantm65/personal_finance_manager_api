@@ -11,7 +11,7 @@ export const createBudget = async (req, res) => {
     const budget = new Budget({
       user: req.user.id,
       category,
-      amount,
+      amount: Number(amount),
       month,
       year,
     });
@@ -19,24 +19,40 @@ export const createBudget = async (req, res) => {
     await budget.save();
     res.status(201).json(budget);
   } catch {
-    res.status(500).json({ message: "Server error" });
+    res.status(422).json({ message: "Unable to create budget" });
   }
 };
 
 export const getBudgets = async (req, res) => {
-  const budgets = await Budget.find({ user: req.user.id });
-  res.status(200).json({ budgets });
+  try {
+    const budgets = await Budget.find({ user: req.user.id });
+    res.status(200).json({ budgets });
+  } catch {
+    res.status(400).json({ message: "Invalid request" });
+  }
 };
 
 export const updateBudget = async (req, res) => {
-  const budget = await Budget.findById(req.params.id);
-  if (!budget) return res.status(404).json({ message: "Not found" });
+  try {
+    const { category, amount, month, year } = req.body;
 
-  if (budget.user.toString() !== req.user.id) {
-    return res.status(403).json({ message: "Unauthorized" });
+    const budget = await Budget.findById(req.params.id);
+    if (!budget) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    if (budget.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    if (category) budget.category = category;
+    if (amount) budget.amount = Number(amount);
+    if (month) budget.month = month;
+    if (year) budget.year = year;
+
+    await budget.save();
+    res.status(200).json(budget);
+  } catch {
+    res.status(422).json({ message: "Unable to update budget" });
   }
-
-  Object.assign(budget, req.body);
-  await budget.save();
-  res.status(200).json(budget);
 };
