@@ -25,7 +25,7 @@ export const createBudget = async (req, res) => {
 
 export const getBudgets = async (req, res) => {
   try {
-    const budgets = await Budget.find({ user: req.user.id });
+    const budgets = await Budget.find({ user: req.user.budgetId });
     res.status(200).json({ budgets });
   } catch {
     res.status(400).json({ message: "Invalid request" });
