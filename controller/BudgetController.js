@@ -36,7 +36,7 @@ export const updateBudget = async (req, res) => {
   try {
     const { category, amount, month, year } = req.body;
 
-    const budget = await Budget.findById(req.params.id);
+    const budget = await Budget.findById(req.params.budgetId);
     if (!budget) {
       return res.status(404).json({ message: "Not found" });
     }
